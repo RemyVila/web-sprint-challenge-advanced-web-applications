@@ -9,6 +9,17 @@ const BubblePage = () => {
   // fetch your colors data from the server when the component mounts
   // set that data to the colorList state property
 
+
+  // NOT SET IN STONE, BUT HERE IS BOILERPLATE USEEFFECT
+  useEffect(() => {
+    axios
+    .get('http://localhost:5000')
+    .then(res => {
+      console.log('res', res);
+      setColorList(res.data);
+    });
+  }, []);
+
   return (
     <>
       <ColorList colors={colorList} updateColors={setColorList} />
