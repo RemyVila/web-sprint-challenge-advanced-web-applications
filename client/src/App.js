@@ -8,7 +8,7 @@ import PrivateRoute from './components/PrivateRoute';
 import "./styles.scss";
 
 function App() {
-  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <Router>
@@ -19,7 +19,7 @@ function App() {
           display BubblePage when you're authenticated 
         */}
 
-        <PrivateRoute exact path='/protected' component={BubblePage} />
+        <PrivateRoute exact path='/bubblepage' component={BubblePage} setIsLoggedIn={setIsLoggedIn} />
       </div>
     </Router>
   );

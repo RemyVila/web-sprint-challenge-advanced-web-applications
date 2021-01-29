@@ -1,28 +1,43 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-
+import React, { useEffect, useState } from "react";
 import Bubbles from "./Bubbles";
 import ColorList from "./ColorList";
+import axiosWithAuth from '../utils/axiosWithAuth';
+import { fetchColorList } from '../utils/fetchColorData'
+// import BubblesForm from '../components/BubblesForm'
+
 
 const BubblePage = () => {
+
   const [colorList, setColorList] = useState([]);
-  // fetch your colors data from the server when the component mounts
-  // set that data to the colorList state property
 
+  const getListData = () => {
+    fetchColorList()
+      .then((req => {
+        setColorList(req.data);
+      }))
+      .catch(err => {
+        console.log(err);
+      })
+  }
 
-  // NOT SET IN STONE, BUT HERE IS BOILERPLATE USEEFFECT
+  const postColor = (color) => {
+    axiosWithAuth()
+      .post('/colors', color)
+      .then(req => {
+        setColorList(req.data)
+      })
+      .catch(err => {
+        console.log(err);
+    })
+  }
+
   useEffect(() => {
-    axios
-    .get('http://localhost:5000')
-    .then(res => {
-      console.log('res', res);
-      setColorList(res.data);
-    });
+    getListData()
   }, []);
 
   return (
     <>
-      <ColorList colors={colorList} updateColors={setColorList} />
+      <ColorList colors={colorList} updateColors={setColorList} getColorList={getListData} />
       <Bubbles colors={colorList} />
     </>
   );
